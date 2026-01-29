@@ -1,10 +1,7 @@
 /**
  * Biblical Geography Explorer - Data
- * Territory definitions, location markers, and biblical references.
- * Coordinates are [latitude, longitude] for Leaflet.
  */
 
-// Reference coordinates (approximate)
 const REFERENCE = {
   jerusalem: [31.7683, 35.2137],
   dan: [33.2486, 35.6522],
@@ -16,10 +13,6 @@ const REFERENCE = {
   wadiElArish: [31.0, 33.8],
 };
 
-/**
- * Biblical location markers: cities and geographic features.
- * type: 'city' | 'feature' (features use label positions, not point markers for water bodies)
- */
 const BIBLICAL_LOCATIONS = {
   cities: [
     { name: 'Jerusalem', coords: [31.7683, 35.2137] },
@@ -37,7 +30,6 @@ const BIBLICAL_LOCATIONS = {
     { name: 'Ur of the Chaldeans', coords: [30.96, 46.1] },
     { name: 'Haran', coords: [36.87, 39.03] },
   ],
-  // Geographic features: label position only (for seas/rivers shown on base map)
   features: [
     { name: 'Dead Sea', coords: [31.5, 35.5], type: 'feature' },
     { name: 'Sea of Galilee', coords: [32.8, 35.6], type: 'feature' },
@@ -46,108 +38,45 @@ const BIBLICAL_LOCATIONS = {
   ],
 };
 
-/**
- * Major rivers: polylines and permanent labels.
- * Always visible; drawn above base map, below territory polygons.
- * Coordinates are [latitude, longitude]. Each river has: id, name, coords, color, weight, labelPosition, labelText.
- */
 const RIVERS = [
   {
     id: 'nile',
     name: 'Nile River',
-    coords: [
-      [24.0, 32.9],   // Aswan area
-      [25.7, 32.0],   // South of Luxor
-      [26.2, 31.9],   // Luxor
-      [27.0, 31.0],   // North of Luxor
-      [28.5, 30.9],   // Middle Egypt
-      [29.5, 30.8],   // Approaching Cairo
-      [30.04, 31.24], // Cairo
-      [30.5, 31.0],   // Nile Delta
-      [31.0, 31.2],   // Nile Delta (north)
-    ],
+    coords: [[24.0, 32.9], [25.7, 32.0], [26.2, 31.9], [27.0, 31.0], [28.5, 30.9], [29.5, 30.8], [30.04, 31.24], [30.5, 31.0], [31.0, 31.2]],
     color: '#0077BE',
     weight: 5,
-    labelPosition: [29.2, 31.0], // Near Cairo
+    labelPosition: [29.2, 31.0],
     labelText: 'NILE RIVER',
   },
   {
     id: 'euphrates',
     name: 'Euphrates River',
-    coords: [
-      [37.0, 38.0],   // Southern Turkey
-      [36.5, 38.5],   // Turkey–Syria
-      [36.0, 39.0],   // Syria (upstream)
-      [35.95, 39.0],  // Raqqa area
-      [35.5, 40.0],   // Syria
-      [34.5, 40.8],   // Syria–Iraq border
-      [34.0, 41.5],   // Iraq
-      [34.0, 43.2],   // Hit, Iraq
-      [33.31, 44.37], // Baghdad
-      [32.5, 44.8],   // South of Baghdad
-      [31.5, 46.0],   // Southeast Iraq
-      [31.0, 47.0],   // Southeast (approx 31°N, 47°E)
-    ],
+    coords: [[37.0, 38.0], [36.5, 38.5], [36.0, 39.0], [35.95, 39.0], [35.5, 40.0], [34.5, 40.8], [34.0, 41.5], [34.0, 43.2], [33.31, 44.37], [32.5, 44.8], [31.5, 46.0], [31.0, 47.0]],
     color: '#0077BE',
     weight: 5,
-    labelPosition: [35.0, 40.2], // Syria–Iraq border area
+    labelPosition: [35.0, 40.2],
     labelText: 'EUPHRATES RIVER',
   },
 ];
 
-/**
- * Abraham's Journey: Ur → Haran → Canaan (Genesis 11:31–12:5).
- * Dashed red polyline, always visible; drawn with rivers above base map, below territory polygons.
- */
 const ABRAHAM_JOURNEY = {
   id: 'abraham-journey',
   name: "Abraham's Journey",
-  coords: [
-    [30.96, 46.1],   // 1. Ur of the Chaldeans – southern Iraq
-    [36.87, 39.03],  // 2. Haran – southern Turkey
-    [32.21, 35.26],  // 3. Shechem – Nablus (first stop in Canaan, Genesis 12:6)
-    [31.93, 35.25],  // 4. Bethel/Ai – hill country (Genesis 12:8)
-    [31.25, 34.8],   // 5. The Negev – Beersheba region (Genesis 12:9)
-  ],
+  coords: [[30.96, 46.1], [36.87, 39.03], [32.21, 35.26], [31.93, 35.25], [31.25, 34.8]],
   color: '#DC143C',
   weight: 5,
   dashArray: '10, 10',
-  labelPosition: [34.5, 38.5], // Near Haran / midpoint of northern leg
+  labelPosition: [34.5, 38.5],
   labelText: "ABRAHAM'S JOURNEY",
 };
 
-/**
- * Territory overlay definitions.
- * Coordinates are [latitude, longitude] for Leaflet (L.polygon expects [lat, lng]).
- */
 const TERRITORIES = [
   {
     id: 'abraham-promised',
     name: "Abraham's Promised Land",
     period: 'c. 2000 BCE',
     periodKey: 'patriarchal',
-    // Genesis 15:18–21: "from the river of Egypt to the great river, the Euphrates"
-    // Maximalist: "river of Egypt" = Nile. [lat, lng]. Trace: Nile Delta → S along Nile to Aswan →
-    // E across N Arabia → Euphrates (Iraq) → N along Euphrates (Syria) → W along Mediterranean → Nile Delta
-    coords: [
-      [30.04, 31.24],   // 1. Nile Delta / Cairo (river of Egypt)
-      [28.5, 30.9],     // 2. South along Nile
-      [26.2, 31.9],     // 3. Nile (Luxor area)
-      [24.0, 32.9],     // 4. Aswan region (south along Nile)
-      [24.0, 35.0],     // 5. East across desert / Red Sea region
-      [26.0, 38.0],     // 6. Northern Arabia
-      [28.0, 41.0],     // 7. Northern Arabia toward Euphrates
-      [31.0, 44.5],     // 8. Euphrates S Iraq (great river – south of Baghdad)
-      [33.31, 44.37],   // 9. Baghdad – Euphrates River (great river at ~44°E)
-      [34.0, 43.2],     // 10. Hit, Iraq – Euphrates
-      [35.5, 41.0],     // 11. Euphrates in Syria
-      [36.0, 38.5],     // 12. Euphrates N Syria
-      [36.0, 36.0],     // 13. Mediterranean – S Turkey / N Syria
-      [33.9, 35.6],     // 14. Lebanon coast
-      [32.5, 34.9],     // 15. Israel/Palestine coast
-      [31.0, 32.0],     // 16. N Egypt, Mediterranean coast
-      [30.04, 31.24],   // 17. Close at Nile Delta
-    ],
+    coords: [[30.04, 31.24], [28.5, 30.9], [26.2, 31.9], [24.0, 32.9], [24.0, 35.0], [26.0, 38.0], [28.0, 41.0], [31.0, 44.5], [33.31, 44.37], [34.0, 43.2], [35.5, 41.0], [36.0, 38.5], [36.0, 36.0], [33.9, 35.6], [32.5, 34.9], [31.0, 32.0], [30.04, 31.24]],
     color: '#FFD700',
     opacity: 0.3,
     reference: 'Genesis 15:18-21',
@@ -159,16 +88,7 @@ const TERRITORIES = [
     name: "Joshua's Conquest",
     period: 'c. 1400-1350 BCE',
     periodKey: 'conquest',
-    coords: [
-      [33.25, 35.65],  // Dan (N)
-      [33.3, 35.0],    // Mediterranean coast N
-      [32.0, 34.9],    // Coast center
-      [31.24, 34.8],   // Beersheba / coast S
-      [31.24, 35.0],   // Beersheba east
-      [31.9, 35.5],   // Jordan valley S
-      [32.8, 35.6],   // Sea of Galilee
-      [33.25, 35.65],  // Back to Dan
-    ],
+    coords: [[33.2486, 35.6522], [33.25, 35.0], [32.0, 34.9], [31.24, 34.8], [31.24, 35.0], [31.3, 35.4], [31.5, 36.2], [32.0, 36.5], [32.8, 36.8], [32.9, 35.8], [33.2486, 35.6522]],
     color: '#4169E1',
     opacity: 0.35,
     reference: 'Joshua 11:16-23, Joshua 13-21',
@@ -180,15 +100,7 @@ const TERRITORIES = [
     name: 'United Kingdom - Core Territory',
     period: 'c. 1010-930 BCE',
     periodKey: 'united-kingdom',
-    coords: [
-      [33.25, 35.65],  // Dan
-      [33.2, 35.0],    // West
-      [31.24, 34.85],  // Beersheba
-      [31.5, 35.8],    // Transjordan S (Moab edge)
-      [32.2, 35.9],    // Transjordan center
-      [32.8, 35.7],    // Gilead
-      [33.25, 35.65],
-    ],
+    coords: [[33.25, 35.65], [33.2, 35.0], [31.24, 34.85], [31.5, 35.8], [32.2, 35.9], [32.8, 35.7], [33.25, 35.65]],
     color: '#8B008B',
     opacity: 0.4,
     reference: '2 Samuel 5:5, 1 Kings 4:7-19',
@@ -200,16 +112,7 @@ const TERRITORIES = [
     name: 'United Kingdom - Tributary States',
     period: 'c. 1010-930 BCE',
     periodKey: 'united-kingdom',
-    coords: [
-      [33.5, 36.3],   // Damascus (Aram)
-      [33.6, 35.2],   // Sidon/Tyre coast
-      [32.0, 34.9],   // Coast
-      [30.5, 35.0],   // Edom region
-      [31.0, 36.0],   // Moab
-      [32.0, 36.2],   // Ammon
-      [33.2, 36.5],   // North
-      [33.5, 36.3],
-    ],
+    coords: [[33.5, 36.3], [33.6, 35.2], [32.0, 34.9], [30.5, 35.0], [31.0, 36.0], [32.0, 36.2], [33.2, 36.5], [33.5, 36.3]],
     color: '#DDA0DD',
     opacity: 0.25,
     reference: '2 Samuel 8:1-14, 1 Kings 4:21',
@@ -221,15 +124,7 @@ const TERRITORIES = [
     name: 'Northern Kingdom - Israel',
     period: '930-722 BCE',
     periodKey: 'divided-kingdom',
-    coords: [
-      [33.25, 35.65],  // Dan
-      [33.3, 35.0],    // Mediterranean
-      [32.4, 34.95],   // Coast (N of Jerusalem)
-      [31.78, 35.25],  // Just north of Jerusalem
-      [31.9, 35.5],   // Jordan
-      [32.8, 35.6],   // Sea of Galilee
-      [33.25, 35.65],
-    ],
+    coords: [[33.25, 35.65], [33.3, 35.0], [32.4, 34.95], [31.78, 35.25], [31.9, 35.5], [32.8, 35.6], [33.25, 35.65]],
     color: '#228B22',
     opacity: 0.35,
     reference: '1 Kings 12:16-20, 2 Kings 17:5-6',
@@ -241,15 +136,7 @@ const TERRITORIES = [
     name: 'Southern Kingdom - Judah',
     period: '930-586 BCE',
     periodKey: 'divided-kingdom',
-    coords: [
-      [31.78, 35.25],  // North border (Jerusalem area)
-      [31.9, 35.0],   // West
-      [31.24, 34.85],  // Beersheba
-      [31.3, 35.2],   // East Negev
-      [31.6, 35.5],   // Dead Sea coast
-      [31.77, 35.22],  // Jerusalem
-      [31.78, 35.25],
-    ],
+    coords: [[31.78, 35.25], [31.9, 35.0], [31.24, 34.85], [31.3, 35.2], [31.6, 35.5], [31.77, 35.22], [31.78, 35.25]],
     color: '#B8860B',
     opacity: 0.35,
     reference: '1 Kings 12:21-24, 2 Kings 25:1-21',
