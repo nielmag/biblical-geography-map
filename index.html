@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblical Geography Explorer</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet.markercluster CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Map container: full viewport -->
+  <div id="map"></div>
+
+  <!-- Disclaimer modal (shown on first load) -->
+  <div id="disclaimer-modal" class="modal" role="dialog" aria-labelledby="disclaimer-title" aria-modal="true">
+    <div class="modal-content">
+      <h2 id="disclaimer-title">Educational Map - Interpretive Framework</h2>
+      <p>
+        This map shows approximate biblical territories for educational and illustrative purposes.
+        Boundaries are simplified representations based on biblical descriptions and traditional
+        interpretations, not precise archaeological or historical claims.
+      </p>
+      <p>
+        This map uses a biblical maximalist framework, depicting territories as described in the
+        biblical text. Coordinate precision is intentionally limited to emphasize the illustrative
+        nature of the visualization.
+      </p>
+      <p>
+        For scholarly research, please consult academic biblical atlases and archaeological resources.
+      </p>
+      <label class="modal-checkbox">
+        <input type="checkbox" id="disclaimer-dont-show" />
+        Don't show again
+      </label>
+      <button type="button" id="disclaimer-accept" class="btn btn-primary">I Understand</button>
+    </div>
+  </div>
+
+  <!-- Control panel sidebar -->
+  <aside id="control-panel" class="control-panel">
+    <header class="panel-header">
+      <h1>Biblical Geography Explorer</h1>
+      <button type="button" id="panel-toggle" class="panel-toggle" aria-label="Toggle panel">≡</button>
+    </header>
+
+    <div class="panel-body">
+      <!-- Map style switcher -->
+      <fieldset class="control-group">
+        <legend>Map Style</legend>
+        <label class="radio-label">
+          <input type="radio" name="map-style" value="topo" checked />
+          Topographic
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="map-style" value="satellite" />
+          Satellite
+        </label>
+      </fieldset>
+
+      <!-- Period selector (multi-select) -->
+      <fieldset class="control-group">
+        <legend>Period</legend>
+        <label class="checkbox-label">
+          <input type="checkbox" class="period-checkbox" value="patriarchal" />
+          Patriarchal Period
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="period-checkbox" value="conquest" />
+          Conquest Period
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="period-checkbox" value="united-kingdom" />
+          United Kingdom
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="period-checkbox" value="divided-kingdom" />
+          Divided Kingdom
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-abraham-journey" />
+          Abraham's Journey
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" class="period-checkbox" id="period-none" value="none" checked />
+          None
+        </label>
+      </fieldset>
+
+      <!-- Additional controls -->
+      <div class="control-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-locations" checked />
+          Show Biblical Locations
+        </label>
+      </div>
+      <div class="control-group">
+        <label for="opacity-slider">Territory opacity: <span id="opacity-value">100</span>%</label>
+        <input type="range" id="opacity-slider" min="0" max="100" value="100" />
+      </div>
+      <div class="control-group">
+        <button type="button" id="fit-territory" class="btn btn-secondary">Fit to Territory</button>
+      </div>
+
+      <!-- Legend (shown when a territory is visible) -->
+      <section id="legend" class="legend" hidden>
+        <h3>Legend</h3>
+        <div id="legend-items"></div>
+      </section>
+    </div>
+  </aside>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  <script src="data.js?v=3"></script>
+  <script src="app.js?v=3"></script>
+</body>
+</html>
