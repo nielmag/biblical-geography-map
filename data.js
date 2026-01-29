@@ -116,6 +116,37 @@ const ABRAHAM_JOURNEY = {
 ========================= */
 const TERRITORIES = [
   {
+    id: 'abraham-promised',
+    name: "Abraham's Promised Land",
+    period: 'c. 2000 BCE',
+    periodKey: 'patriarchal',
+    reference: 'Genesis 15:18–21',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Genesis+15%3A18-21',
+    description:
+      "The land promised to Abraham, 'from the river of Egypt to the great river, the Euphrates'.",
+    color: '#FFD700',
+    opacity: 0.3,
+    coords: [
+      [30.04, 31.24],   // Nile Delta / Cairo
+      [28.5, 30.9],
+      [26.2, 31.9],
+      [24.0, 32.9],     // Aswan
+      [24.0, 35.0],
+      [26.0, 38.0],
+      [28.0, 41.0],
+      [31.0, 44.5],
+      [33.31, 44.37],   // Baghdad / Euphrates
+      [34.0, 43.2],
+      [35.5, 41.0],
+      [36.0, 38.5],
+      [36.0, 36.0],
+      [33.9, 35.6],
+      [32.5, 34.9],
+      [31.0, 32.0],
+      [30.04, 31.24],
+    ],
+  },
+  {
     id: 'joshua-conquest',
     name: "Joshua's Conquest (West of Jordan)",
     period: 'c. 1400–1350 BCE',
