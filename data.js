@@ -53,7 +53,7 @@ const JOSHUA_CONQUEST_CITIES = [
   // Jordan Crossing
   {
     name: 'Jordan Crossing',
-    coords: [32.02, 35.52],
+    coords: [31.88, 35.55],
     type: 'crossing',
     description: 'Where Israel miraculously crossed the Jordan River on dry ground',
     reference: 'Joshua 3:14-17',
@@ -174,7 +174,7 @@ const JOSHUA_CONQUEST_ROUTE = {
   // Central campaign: Jordan Crossing → Gilgal → Jericho → Ai → Gibeon
   // Then southern campaign loop
   coords: [
-    [32.02, 35.52],   // Jordan Crossing
+    [31.88, 35.55],   // Jordan Crossing
     [31.88, 35.47],   // Gilgal (Camp)
     [31.8704, 35.4432], // Jericho
     [31.91, 35.26],   // Ai
@@ -200,7 +200,7 @@ const JOSHUA_NORTHERN_ROUTE = {
   id: 'joshua-northern-route',
   name: "Joshua's Northern Campaign",
   coords: [
-    [32.02, 35.52],   // Jordan Crossing
+    [31.88, 35.55],   // Jordan Crossing
     [31.88, 35.47],   // Gilgal (Camp)
     [32.21, 35.26],   // Through Shechem area
     [32.8, 35.5],     // Past Sea of Galilee

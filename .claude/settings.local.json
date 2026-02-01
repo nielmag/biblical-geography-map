@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m http.server:*)",
+      "Bash(timeout:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nAdd Jordan River crossing point and permanent labels for Joshua''s Conquest\n\n- Add Jordan Crossing \\(Adam/Damiya\\) as order 0 with green marker\n- Update southern and northern routes to originate from crossing point\n- Make conquest city labels permanent \\(visible when checkbox enabled\\)\n- Style labels: brown for cities, green for crossing point\n- Update legend with green crossing marker alongside gold/red/blue\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
+    ]
+  }
+}

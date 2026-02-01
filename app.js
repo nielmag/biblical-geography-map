@@ -189,7 +189,7 @@
 
       marker.bindPopup(popupHtml, { maxWidth: 280 });
       // Tooltip with permanent: true so labels always show when Joshua's Conquest is enabled
-      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: getConquestTooltipClass(city) });
+      marker.bindTooltip(city.name, { permanent: true, direction: city.type === 'crossing' ? 'bottom' : 'top', className: getConquestTooltipClass(city) });
       marker.cityData = city;
       joshuaCityMarkers.push(marker);
     });
