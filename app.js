@@ -100,6 +100,101 @@
     });
   }
 
+  // --- Joshua's Conquest Route (dashed brown polyline, toggle via checkbox) ---
+  const joshuaLayerGroup = L.layerGroup().addTo(map);
+  var joshuaSouthernLine = null;
+  var joshuaSouthernLabel = null;
+  var joshuaNorthernLine = null;
+  var joshuaNorthernLabel = null;
+  var joshuaCityMarkers = [];
+
+  // Create southern campaign route
+  if (typeof JOSHUA_CONQUEST_ROUTE !== 'undefined' && JOSHUA_CONQUEST_ROUTE.coords && JOSHUA_CONQUEST_ROUTE.coords.length >= 2) {
+    joshuaSouthernLine = L.polyline(JOSHUA_CONQUEST_ROUTE.coords, {
+      color: JOSHUA_CONQUEST_ROUTE.color,
+      weight: JOSHUA_CONQUEST_ROUTE.weight || 4,
+      opacity: 1,
+      dashArray: JOSHUA_CONQUEST_ROUTE.dashArray || '8, 6',
+      className: 'joshua-polyline',
+    });
+    joshuaSouthernLabel = L.marker(JOSHUA_CONQUEST_ROUTE.labelPosition, {
+      icon: L.divIcon({
+        className: 'joshua-label',
+        html: '<span class="joshua-label-text">' + (JOSHUA_CONQUEST_ROUTE.labelText || JOSHUA_CONQUEST_ROUTE.name) + '</span>',
+        iconSize: null,
+        iconAnchor: [0, 0],
+      }),
+      interactive: false,
+    });
+  }
+
+  // Create northern campaign route
+  if (typeof JOSHUA_NORTHERN_ROUTE !== 'undefined' && JOSHUA_NORTHERN_ROUTE.coords && JOSHUA_NORTHERN_ROUTE.coords.length >= 2) {
+    joshuaNorthernLine = L.polyline(JOSHUA_NORTHERN_ROUTE.coords, {
+      color: JOSHUA_NORTHERN_ROUTE.color,
+      weight: JOSHUA_NORTHERN_ROUTE.weight || 4,
+      opacity: 1,
+      dashArray: JOSHUA_NORTHERN_ROUTE.dashArray || '8, 6',
+      className: 'joshua-polyline',
+    });
+    joshuaNorthernLabel = L.marker(JOSHUA_NORTHERN_ROUTE.labelPosition, {
+      icon: L.divIcon({
+        className: 'joshua-label',
+        html: '<span class="joshua-label-text">' + (JOSHUA_NORTHERN_ROUTE.labelText || JOSHUA_NORTHERN_ROUTE.name) + '</span>',
+        iconSize: null,
+        iconAnchor: [0, 0],
+      }),
+      interactive: false,
+    });
+  }
+
+  // Create conquest city markers
+  function createConquestCityIcon(city) {
+    var bgColor = '#8B4513'; // Default brown
+    if (city.type === 'crossing') bgColor = '#2E8B57'; // Green for crossing
+    if (city.type === 'camp') bgColor = '#FFD700'; // Gold for camp
+    if (city.type === 'treaty') bgColor = '#4169E1'; // Blue for treaty
+    if (city.type === 'conquered') bgColor = '#DC143C'; // Red for conquered
+
+    return L.divIcon({
+      className: 'conquest-marker',
+      html: '<div style="width:12px;height:12px;border-radius:50%;background:' + bgColor + ';border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);"></div>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+    });
+  }
+
+  // Get tooltip class based on city type
+  function getConquestTooltipClass(city) {
+    if (city.type === 'crossing') return 'conquest-marker-label conquest-label-crossing';
+    return 'conquest-marker-label conquest-label-city';
+  }
+
+  if (typeof JOSHUA_CONQUEST_CITIES !== 'undefined' && JOSHUA_CONQUEST_CITIES.length) {
+    JOSHUA_CONQUEST_CITIES.forEach(function (city) {
+      var marker = L.marker(city.coords, { icon: createConquestCityIcon(city) });
+
+      // Create popup content
+      var refLink = city.referenceUrl
+        ? '<a href="' + city.referenceUrl + '" target="_blank" rel="noopener">' + city.reference + '</a>'
+        : city.reference;
+      var popupHtml =
+        '<div class="conquest-popup">' +
+        '<h3>' + city.name + '</h3>' +
+        '<p class="conquest-order">Conquest Order: #' + city.order + '</p>' +
+        '<p class="conquest-type">Type: ' + city.type.charAt(0).toUpperCase() + city.type.slice(1) + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + city.description + '</p>' +
+        '</div>';
+
+      marker.bindPopup(popupHtml, { maxWidth: 280 });
+      // Tooltip with permanent: true so labels always show when Joshua's Conquest is enabled
+      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: getConquestTooltipClass(city) });
+      marker.cityData = city;
+      joshuaCityMarkers.push(marker);
+    });
+  }
+
   // --- Territory layers ---
   const territoryLayers = {};
   const territoryLayerGroup = L.layerGroup().addTo(map);
@@ -266,10 +361,14 @@
     const legend = document.getElementById('legend');
     const container = document.getElementById('legend-items');
     const journeyCheckbox = document.getElementById('show-abraham-journey');
+    const joshuaCheckbox = document.getElementById('show-joshua-conquest');
     const showJourney = journeyCheckbox && journeyCheckbox.checked;
+    const showJoshua = joshuaCheckbox && joshuaCheckbox.checked;
     container.innerHTML = '';
-    legend.hidden = !(territories.length || showJourney);
+    legend.hidden = !(territories.length || showJourney || showJoshua);
     if (legend.hidden) return;
+    
+    // Territory legend items
     territories.forEach(function (t) {
       const refLink = t.referenceUrl
         ? '<a href="' + t.referenceUrl + '" target="_blank" rel="noopener">' + escapeHtml(t.reference) + '</a>'
@@ -281,6 +380,8 @@
         '<span><span class="legend-name">' + escapeHtml(t.name) + '</span><br><span class="legend-ref">' + refLink + '</span><br><span>' + escapeHtml(t.description) + '</span></span>';
       container.appendChild(el);
     });
+    
+    // Abraham's Journey legend
     if (showJourney && typeof ABRAHAM_JOURNEY !== 'undefined') {
       const journeyEl = document.createElement('div');
       journeyEl.className = 'legend-item legend-item-journey';
@@ -288,6 +389,42 @@
         '<span class="legend-line legend-line-dashed" style="border-color:' + (ABRAHAM_JOURNEY.color || '#DC143C') + '"></span>' +
         '<span><span class="legend-name">' + escapeHtml(ABRAHAM_JOURNEY.labelText || ABRAHAM_JOURNEY.name) + '</span><br><span>Ur → Haran → Shechem → Bethel/Ai → Negev (Genesis 11:31–12:5)</span></span>';
       container.appendChild(journeyEl);
+    }
+    
+    // Joshua's Conquest legend
+    if (showJoshua) {
+      // Southern campaign
+      if (typeof JOSHUA_CONQUEST_ROUTE !== 'undefined') {
+        const joshuaSouthEl = document.createElement('div');
+        joshuaSouthEl.className = 'legend-item legend-item-joshua';
+        joshuaSouthEl.innerHTML =
+          '<span class="legend-line legend-line-dashed" style="border-color:' + (JOSHUA_CONQUEST_ROUTE.color || '#8B4513') + '"></span>' +
+          '<span><span class="legend-name">Southern Campaign</span><br><span>Gilgal → Jericho → Ai → Gibeon → Southern cities (Joshua 6–10)</span></span>';
+        container.appendChild(joshuaSouthEl);
+      }
+      
+      // Northern campaign
+      if (typeof JOSHUA_NORTHERN_ROUTE !== 'undefined') {
+        const joshuaNorthEl = document.createElement('div');
+        joshuaNorthEl.className = 'legend-item legend-item-joshua';
+        joshuaNorthEl.innerHTML =
+          '<span class="legend-line legend-line-dashed" style="border-color:' + (JOSHUA_NORTHERN_ROUTE.color || '#2E8B57') + '"></span>' +
+          '<span><span class="legend-name">Northern Campaign</span><br><span>Gilgal → Hazor (Joshua 11)</span></span>';
+        container.appendChild(joshuaNorthEl);
+      }
+      
+      // City markers legend
+      const cityLegendEl = document.createElement('div');
+      cityLegendEl.className = 'legend-item legend-item-joshua-cities';
+      cityLegendEl.innerHTML =
+        '<span class="legend-markers">' +
+        '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#2E8B57;border:1px solid #999;margin-right:4px;" title="Crossing"></span>' +
+        '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#FFD700;border:1px solid #999;margin-right:4px;" title="Camp"></span>' +
+        '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#DC143C;border:1px solid #999;margin-right:4px;" title="Conquered"></span>' +
+        '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#4169E1;border:1px solid #999;" title="Treaty"></span>' +
+        '</span>' +
+        '<span><span class="legend-name">Conquest Cities</span><br><span>Green=Crossing, Gold=Camp, Red=Conquered, Blue=Treaty</span></span>';
+      container.appendChild(cityLegendEl);
     }
   }
 
@@ -333,17 +470,39 @@
   // --- Fit to territory (all visible periods) ---
   function fitToTerritory() {
     const selectedKeys = getSelectedPeriodKeys();
-    if (!selectedKeys.length) {
+    const joshuaCheckbox = document.getElementById('show-joshua-conquest');
+    const showJoshua = joshuaCheckbox && joshuaCheckbox.checked;
+    
+    if (!selectedKeys.length && !showJoshua) {
       map.setView(JERUSALEM, INITIAL_ZOOM);
       return;
     }
+    
+    var bounds = null;
+    
+    // Include territories
     const territories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
-    if (!territories.length) return;
-    const bounds = L.latLngBounds(territories[0].coords);
-    territories.forEach(function (t) {
-      t.coords.forEach(function (c) { bounds.extend(c); });
-    });
-    map.fitBounds(bounds, { padding: [30, 30], maxZoom: 7 });
+    if (territories.length) {
+      bounds = L.latLngBounds(territories[0].coords);
+      territories.forEach(function (t) {
+        t.coords.forEach(function (c) { bounds.extend(c); });
+      });
+    }
+    
+    // Include Joshua conquest if visible
+    if (showJoshua && typeof JOSHUA_CONQUEST_CITIES !== 'undefined') {
+      JOSHUA_CONQUEST_CITIES.forEach(function (city) {
+        if (!bounds) {
+          bounds = L.latLngBounds([city.coords]);
+        } else {
+          bounds.extend(city.coords);
+        }
+      });
+    }
+    
+    if (bounds) {
+      map.fitBounds(bounds, { padding: [30, 30], maxZoom: 9 });
+    }
   }
 
   // --- Control panel: map style ---
@@ -360,6 +519,9 @@
         document.querySelectorAll('.period-checkbox').forEach(function (cb) {
           if (cb !== checkbox) cb.checked = false;
         });
+      } else if (this.id !== 'period-none' && this.checked) {
+        var noneEl = document.getElementById('period-none');
+        if (noneEl) noneEl.checked = false;
       }
       applyPeriodFromCheckboxes();
     });
@@ -382,6 +544,38 @@
       updateLegend(visibleTerritories);
     }
     journeyCheckbox.addEventListener('change', toggleJourney);
+  })();
+
+  // --- Joshua's Conquest checkbox: show/hide route, cities, and refresh legend ---
+  (function () {
+    const joshuaCheckbox = document.getElementById('show-joshua-conquest');
+    if (!joshuaCheckbox) return;
+    
+    function toggleJoshuaConquest() {
+      if (joshuaCheckbox.checked) {
+        // Add southern campaign route
+        if (joshuaSouthernLine) joshuaLayerGroup.addLayer(joshuaSouthernLine);
+        if (joshuaSouthernLabel) joshuaLayerGroup.addLayer(joshuaSouthernLabel);
+        
+        // Add northern campaign route
+        if (joshuaNorthernLine) joshuaLayerGroup.addLayer(joshuaNorthernLine);
+        if (joshuaNorthernLabel) joshuaLayerGroup.addLayer(joshuaNorthernLabel);
+        
+        // Add city markers
+        joshuaCityMarkers.forEach(function (marker) {
+          joshuaLayerGroup.addLayer(marker);
+        });
+      } else {
+        // Remove everything
+        joshuaLayerGroup.clearLayers();
+      }
+      
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    joshuaCheckbox.addEventListener('change', toggleJoshuaConquest);
   })();
 
   // --- Show Biblical Locations checkbox ---

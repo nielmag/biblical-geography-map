@@ -75,6 +75,87 @@ html, body {
   letter-spacing: 0.02em;
 }
 
+/* Joshua's Conquest: dashed brown polyline label */
+.joshua-label {
+  background: none !important;
+  border: none !important;
+  pointer-events: none;
+}
+.joshua-label-text {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8B4513;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 1px 2px rgba(0,0,0,0.3);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* Conquest city markers */
+.conquest-marker {
+  background: none !important;
+  border: none !important;
+}
+
+/* Base conquest marker label styles */
+.conquest-marker-label {
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 2px 4px !important;
+}
+
+/* Conquest city labels - brown to match route */
+.conquest-label-city {
+  color: #8B4513;
+  text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* Crossing point label - green to distinguish */
+.conquest-label-crossing {
+  color: #2E8B57;
+  text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* Conquest popup styling */
+.conquest-popup h3 {
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+  color: #5D3A1A;
+}
+
+.conquest-popup .conquest-order {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.conquest-popup .conquest-type {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0 0 8px 0;
+}
+
+.conquest-popup .ref a {
+  color: #4169E1;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.conquest-popup .ref a:hover {
+  text-decoration: underline;
+}
+
+.conquest-popup .description {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
 /* Control panel: sidebar overlay */
 .control-panel {
   position: fixed;
@@ -259,6 +340,15 @@ input[type="range"] {
 }
 .legend-line-dashed {
   border-top-style: dashed;
+}
+
+.legend-markers {
+  flex-shrink: 0;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  align-self: center;
 }
 
 .legend-item span:last-child {

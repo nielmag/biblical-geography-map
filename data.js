@@ -45,6 +45,175 @@ const BIBLICAL_LOCATIONS = {
 };
 
 /* =========================
+   JOSHUA'S CONQUEST CITIES
+   Cities conquered during Joshua's campaigns
+   Reference: Joshua 6-12
+========================= */
+const JOSHUA_CONQUEST_CITIES = [
+  // Jordan Crossing
+  {
+    name: 'Jordan Crossing (Adam/Damiya)',
+    coords: [32.09, 35.54],
+    type: 'crossing',
+    description: 'Where Israel crossed the Jordan River on dry ground; waters stopped at Adam',
+    reference: 'Joshua 3:14-17',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+3%3A14-17',
+    order: 0,
+  },
+  // Central Campaign
+  {
+    name: 'Gilgal (Camp)',
+    coords: [31.88, 35.47],
+    type: 'camp',
+    description: 'Base camp east of Jericho where Israel set up memorial stones',
+    reference: 'Joshua 4:19-20',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+4%3A19-20',
+    order: 1,
+  },
+  {
+    name: 'Jericho',
+    coords: [31.8704, 35.4432],
+    type: 'conquered',
+    description: 'First city conquered; walls fell after 7-day march',
+    reference: 'Joshua 6:1-27',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+6',
+    order: 2,
+  },
+  {
+    name: 'Ai',
+    coords: [31.91, 35.26],
+    type: 'conquered',
+    description: 'Second city conquered after initial defeat due to Achan\'s sin',
+    reference: 'Joshua 7-8',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+7-8',
+    order: 3,
+  },
+  {
+    name: 'Gibeon',
+    coords: [31.85, 35.18],
+    type: 'treaty',
+    description: 'Made peace treaty through deception; later defended by Joshua',
+    reference: 'Joshua 9:3-27; 10:1-14',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+9%3A3-27',
+    order: 4,
+  },
+  // Southern Campaign - Five Amorite Kings
+  {
+    name: 'Makkedah',
+    coords: [31.70, 34.92],
+    type: 'conquered',
+    description: 'Where the five Amorite kings hid in a cave and were executed',
+    reference: 'Joshua 10:16-28',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+10%3A16-28',
+    order: 5,
+  },
+  {
+    name: 'Libnah',
+    coords: [31.63, 34.88],
+    type: 'conquered',
+    description: 'Conquered in the southern campaign',
+    reference: 'Joshua 10:29-30',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+10%3A29-30',
+    order: 6,
+  },
+  {
+    name: 'Lachish',
+    coords: [31.565, 34.849],
+    type: 'conquered',
+    description: 'Major fortified city; conquered in two days',
+    reference: 'Joshua 10:31-32',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+10%3A31-32',
+    order: 7,
+  },
+  {
+    name: 'Eglon',
+    coords: [31.50, 34.83],
+    type: 'conquered',
+    description: 'Conquered same day as Lachish',
+    reference: 'Joshua 10:34-35',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+10%3A34-35',
+    order: 8,
+  },
+  {
+    name: 'Hebron',
+    coords: [31.5326, 35.0998],
+    type: 'conquered',
+    description: 'Ancient city of the Anakim; later given to Caleb',
+    reference: 'Joshua 10:36-37',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+10%3A36-37',
+    order: 9,
+  },
+  {
+    name: 'Debir',
+    coords: [31.42, 35.02],
+    type: 'conquered',
+    description: 'Also called Kiriath-sepher; conquered in southern campaign',
+    reference: 'Joshua 10:38-39',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+10%3A38-39',
+    order: 10,
+  },
+  // Northern Campaign
+  {
+    name: 'Hazor',
+    coords: [33.02, 35.57],
+    type: 'conquered',
+    description: 'Head of all northern kingdoms; burned with fire',
+    reference: 'Joshua 11:1-13',
+    referenceUrl: 'https://www.biblegateway.com/passage/?search=Joshua+11%3A1-13',
+    order: 11,
+  },
+];
+
+/* =========================
+   JOSHUA'S CONQUEST ROUTE
+   Campaign path showing military movements
+========================= */
+const JOSHUA_CONQUEST_ROUTE = {
+  id: 'joshua-conquest-route',
+  name: "Joshua's Conquest Route",
+  // Central campaign: Jordan Crossing → Gilgal → Jericho → Ai → Gibeon
+  // Then southern campaign loop
+  coords: [
+    [32.09, 35.54],   // Jordan Crossing (Adam/Damiya)
+    [31.88, 35.47],   // Gilgal (Camp)
+    [31.8704, 35.4432], // Jericho
+    [31.91, 35.26],   // Ai
+    [31.85, 35.18],   // Gibeon
+    [31.70, 34.92],   // Makkedah
+    [31.63, 34.88],   // Libnah
+    [31.565, 34.849], // Lachish
+    [31.50, 34.83],   // Eglon
+    [31.5326, 35.0998], // Hebron
+    [31.42, 35.02],   // Debir
+  ],
+  color: '#8B4513',  // Saddle brown - distinct from Abraham's red
+  weight: 4,
+  dashArray: '8, 6',
+  labelPosition: [31.65, 35.15],
+  labelText: "JOSHUA'S SOUTHERN CAMPAIGN",
+};
+
+/* =========================
+   JOSHUA'S NORTHERN CAMPAIGN ROUTE
+========================= */
+const JOSHUA_NORTHERN_ROUTE = {
+  id: 'joshua-northern-route',
+  name: "Joshua's Northern Campaign",
+  coords: [
+    [32.09, 35.54],   // Jordan Crossing (Adam/Damiya)
+    [31.88, 35.47],   // Gilgal (Camp)
+    [32.21, 35.26],   // Through Shechem area
+    [32.8, 35.5],     // Past Sea of Galilee
+    [33.02, 35.57],   // Hazor
+  ],
+  color: '#2E8B57',  // Sea green - distinct color for northern campaign
+  weight: 4,
+  dashArray: '8, 6',
+  labelPosition: [32.5, 35.4],
+  labelText: "JOSHUA'S NORTHERN CAMPAIGN",
+};
+
+/* =========================
    RIVERS
 ========================= */
 const RIVERS = [
@@ -178,7 +347,7 @@ const TERRITORIES = [
 
   {
     id: 'united-kingdom-core',
-    name: 'United Kingdom – Core Territory',
+    name: 'United Kingdom — Core Territory',
     period: 'c. 1010–930 BCE',
     periodKey: 'united-kingdom',
     coords: [
@@ -199,7 +368,7 @@ const TERRITORIES = [
 
   {
     id: 'united-kingdom-tributary',
-    name: 'United Kingdom – Tributary States',
+    name: 'United Kingdom — Tributary States',
     period: 'c. 1010–930 BCE',
     periodKey: 'united-kingdom',
     coords: [
@@ -222,7 +391,7 @@ const TERRITORIES = [
 
   {
     id: 'northern-kingdom-israel',
-    name: 'Northern Kingdom – Israel',
+    name: 'Northern Kingdom — Israel',
     period: '930–722 BCE',
     periodKey: 'divided-kingdom',
     coords: [
@@ -244,7 +413,7 @@ const TERRITORIES = [
 
   {
     id: 'southern-kingdom-judah',
-    name: 'Southern Kingdom – Judah',
+    name: 'Southern Kingdom — Judah',
     period: '930–586 BCE',
     periodKey: 'divided-kingdom',
     coords: [
