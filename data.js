@@ -370,83 +370,76 @@ const ANCIENT_EMPIRES = [
       },
     ],
     coords: [
-      // Start in northwest - Britain
+      // Roman Empire at 95 CE - simplified outer boundary only
+      // Traced clockwise starting from Rhine mouth
+      
+      // Northern frontier - Rhine to Danube
+      [52.0, 5.0],       // Rhine mouth (Netherlands)
+      [51.5, 7.0],       // Lower Rhine
+      [50.0, 8.5],       // Middle Rhine
+      [48.5, 9.0],       // Upper Rhine/Danube junction
+      [48.0, 13.0],      // Danube - Bavaria
+      [48.0, 17.0],      // Danube - Vienna
+      [47.0, 19.0],      // Danube - Hungary
+      [45.0, 21.0],      // Danube - Serbia
+      [44.0, 28.5],      // Danube mouth (Black Sea)
+      
+      // Black Sea and Anatolia
+      [42.0, 32.0],      // Black Sea south coast
+      [41.0, 37.0],      // Pontus
+      [40.0, 41.0],      // Eastern Anatolia
+      
+      // Eastern frontier
+      [38.0, 42.0],      // Armenia frontier
+      [36.5, 39.0],      // Upper Euphrates
+      [35.5, 36.5],      // Syria
+      [33.0, 36.0],      // Phoenicia
+      [31.5, 35.0],      // Judea
+      [30.0, 34.0],      // Sinai
+      
+      // Egypt
+      [31.0, 32.0],      // Nile Delta
+      [30.0, 31.0],      // Cairo region
+      [24.0, 33.0],      // Upper Egypt (Aswan)
+      
+      // North Africa coast (east to west)
+      [32.0, 24.0],      // Cyrenaica
+      [32.5, 20.0],      // Libya
+      [32.0, 12.0],      // Tripolitania
+      [37.0, 10.0],      // Tunisia/Carthage
+      [36.5, 6.0],       // Algeria
+      [35.5, -1.0],      // Western Algeria
+      [35.0, -5.5],      // Morocco
+      
+      // Strait of Gibraltar to Iberia
+      [36.0, -6.0],      // Gibraltar
+      [37.0, -9.0],      // SW Portugal
+      [39.5, -9.5],      // Lisbon
+      [42.0, -9.0],      // NW Spain
+      [43.5, -8.0],      // Galicia
+      [43.5, -2.0],      // Cantabria/Basque
+      
+      // France Atlantic coast
+      [46.0, -1.5],      // Bay of Biscay
+      [47.5, -3.0],      // Brittany south
+      [48.5, -4.5],      // Brittany west
+      [49.0, -2.0],      // Brittany north
+      [50.0, 1.5],       // Channel (Calais)
+      [51.5, 4.0],       // Belgium
+      [52.0, 5.0],       // Back to Rhine mouth
+    ],
+    // Britain as separate polygon (will need multipolygon support or separate layer)
+    coordsBritain: [
       [50.0, -5.5],      // Cornwall
       [50.5, -1.0],      // South coast
       [51.5, 1.0],       // Southeast (Dover)
       [53.0, 0.5],       // East coast
-      [55.0, -2.0],      // Hadrian's Wall area (northern limit ~95 CE)
+      [55.0, -2.0],      // Hadrian's Wall area
       [55.0, -4.5],      // West Scotland border
       [54.0, -5.0],      // Northwest England
       [53.0, -4.5],      // Wales
       [51.5, -5.0],      // Southwest Wales
       [50.0, -5.5],      // Back to Cornwall
-      // Cross to Gaul (France)
-      [49.0, -2.0],      // Brittany north
-      [48.5, -4.5],      // Brittany west
-      [47.0, -2.5],      // Loire
-      [46.0, -1.5],      // Bay of Biscay
-      // Iberian Peninsula (Spain/Portugal)
-      [44.0, -8.5],      // Northwest Spain
-      [42.0, -9.0],      // Portugal north
-      [37.0, -9.0],      // Portugal south
-      [36.0, -6.0],      // Gibraltar area
-      [36.5, -2.0],      // Southern Spain
-      [38.0, 0.0],       // Valencia
-      [41.0, 2.0],       // Catalonia
-      [43.0, 3.0],       // Southern France coast
-      // Southern France to Alps
-      [43.5, 7.0],       // Nice/Riviera
-      [44.0, 8.0],       // Genoa area
-      // Northern frontier - Rhine/Danube
-      [47.5, 8.0],       // Swiss Alps
-      [48.0, 8.5],       // Upper Rhine
-      [50.0, 8.0],       // Frankfurt area (Rhine frontier)
-      [51.5, 7.0],       // Lower Rhine
-      [52.0, 5.0],       // Netherlands
-      [51.0, 3.5],       // Belgium coast
-      // Back along Rhine-Danube frontier
-      [50.0, 9.0],       // Main river
-      [49.0, 12.0],      // Danube source area
-      [48.0, 14.0],      // Austria
-      [48.0, 17.0],      // Vienna area
-      [47.5, 19.0],      // Pannonia
-      [45.5, 20.0],      // Danube bend
-      [44.5, 22.5],      // Serbia (Moesia)
-      [44.0, 28.0],      // Danube delta (Black Sea)
-      // Black Sea coast (Pontus)
-      [43.0, 34.0],      // Pontus coast
-      [41.5, 37.0],      // Northern Anatolia
-      [41.0, 40.5],      // Eastern Pontus
-      // Eastern frontier (Euphrates)
-      [39.5, 42.0],      // Armenia border (client kingdom)
-      [37.5, 40.5],      // Upper Euphrates
-      [36.0, 38.0],      // Commagene
-      [35.0, 36.5],      // Syria
-      [33.5, 36.0],      // Damascus area
-      [33.0, 35.5],      // Tyre/Sidon
-      [32.5, 35.3],      // Galilee
-      [31.8, 35.5],      // Jerusalem
-      [31.0, 34.5],      // Gaza
-      [30.5, 34.0],      // Sinai border
-      // Egypt
-      [31.5, 32.0],      // Nile Delta
-      [30.0, 31.2],      // Cairo/Memphis
-      [27.0, 31.0],      // Middle Egypt
-      [24.0, 33.0],      // First Cataract (Aswan)
-      // North Africa westward
-      [31.5, 25.0],      // Cyrenaica
-      [32.5, 22.0],      // Libya coast
-      [32.0, 15.0],      // Gulf of Sidra
-      [33.5, 11.0],      // Tripoli
-      [37.0, 10.0],      // Carthage/Tunisia
-      [36.8, 8.5],       // Tunisia coast
-      [36.5, 5.0],       // Algeria
-      [35.8, 0.0],       // Oran
-      [35.5, -5.0],      // Morocco (Mauretania Tingitana)
-      [36.0, -6.0],      // Back to Gibraltar - closes North Africa
-      // Close the polygon through Mediterranean
-      [36.0, -6.0],      // Gibraltar (polygon will close)
     ],
   },
   {

@@ -562,6 +562,24 @@
       });
       empireLayers[empire.id] = layer;
       empireLayerGroup.addLayer(layer);
+      
+      // Handle separate Britain polygon for Roman Empire
+      if (empire.coordsBritain) {
+        var britainLayer = L.polygon(empire.coordsBritain, {
+          color: empire.color,
+          fillColor: empire.color,
+          fillOpacity: 0,
+          opacity: 0,
+          weight: 2,
+          className: 'empire-polygon',
+        });
+        britainLayer.empireData = empire;
+        britainLayer.on('click', function () {
+          showEmpirePopup(this);
+        });
+        empireLayers[empire.id + '-britain'] = britainLayer;
+        empireLayerGroup.addLayer(britainLayer);
+      }
     });
   }
 
@@ -593,6 +611,18 @@
       color: e.color,
     });
     if (layer._path) layer._path.style.pointerEvents = visible ? 'auto' : 'none';
+    
+    // Also handle Britain polygon for Roman Empire
+    const britainLayer = empireLayers[empireId + '-britain'];
+    if (britainLayer) {
+      britainLayer.setStyle({
+        fillOpacity: fillOpacity,
+        opacity: visible ? 0.8 : 0,
+        fillColor: e.color,
+        color: e.color,
+      });
+      if (britainLayer._path) britainLayer._path.style.pointerEvents = visible ? 'auto' : 'none';
+    }
   }
 
   // --- Biblical location markers (clustered) ---
