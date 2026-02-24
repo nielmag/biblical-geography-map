@@ -6,6 +6,8 @@
   <title>Biblical Geography Explorer</title>
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet Zoom Slider CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.zoomslider@0.7.1/src/L.Control.Zoomslider.css" />
   <!-- Leaflet.markercluster CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
@@ -100,12 +102,37 @@
       </fieldset>
 
       <!-- Additional controls -->
-      <div class="control-group">
+      <fieldset class="control-group">
+        <legend>Show Biblical Locations</legend>
         <label class="checkbox-label">
           <input type="checkbox" id="show-locations" checked />
-          Show Biblical Locations
+          Cities &amp; Features
         </label>
-      </div>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-assyrian-empire" />
+          Assyrian Empire
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-babylonian-empire" />
+          Babylonian Empire
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-persian-empire" />
+          Persian Empire
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-greek-empire" />
+          Greek Empire
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-roman-empire" />
+          Roman Empire
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="show-garden-eden" />
+          Garden of Eden (Proposed)
+        </label>
+      </fieldset>
       <div class="control-group">
         <label for="opacity-slider">Territory opacity: <span id="opacity-value">100</span>%</label>
         <input type="range" id="opacity-slider" min="0" max="100" value="100" />
@@ -124,8 +151,10 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Leaflet Zoom Slider JS -->
+  <script src="https://unpkg.com/leaflet.zoomslider@0.7.1/src/L.Control.Zoomslider.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
-  <script src="data.js?v=4"></script>
-  <script src="app.js?v=4"></script>
+  <script src="data.js?v=21"></script>
+  <script src="app.js?v=20"></script>
 </body>
 </html>

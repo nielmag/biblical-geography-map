@@ -13,8 +13,13 @@
   const map = L.map('map', {
     center: JERUSALEM,
     zoom: INITIAL_ZOOM,
-    zoomControl: true,
+    zoomControl: false,  // Disable default, we'll add zoom slider
+    zoomSnap: 0.25,      // Allow fractional zoom levels (0.25 increments)
+    zoomDelta: 0.5,      // Zoom 0.5 levels per scroll/click
   });
+
+  // Add zoom slider to top-right so it's not hidden by control panel
+  L.control.zoomslider({ position: 'topright', stepHeight: 10 }).addTo(map);
 
   // Base map layer group: only tile layer(s) go here so we can switch styles without affecting overlays
   const baseMapLayerGroup = L.layerGroup().addTo(map);
@@ -362,10 +367,22 @@
     const container = document.getElementById('legend-items');
     const journeyCheckbox = document.getElementById('show-abraham-journey');
     const joshuaCheckbox = document.getElementById('show-joshua-conquest');
+    const assyrianCheckbox = document.getElementById('show-assyrian-empire');
+    const babylonianCheckbox = document.getElementById('show-babylonian-empire');
+    const persianCheckbox = document.getElementById('show-persian-empire');
+    const greekCheckbox = document.getElementById('show-greek-empire');
+    const romanCheckbox = document.getElementById('show-roman-empire');
+    const edenCheckbox = document.getElementById('show-garden-eden');
     const showJourney = journeyCheckbox && journeyCheckbox.checked;
     const showJoshua = joshuaCheckbox && joshuaCheckbox.checked;
+    const showAssyrian = assyrianCheckbox && assyrianCheckbox.checked;
+    const showBabylonian = babylonianCheckbox && babylonianCheckbox.checked;
+    const showPersian = persianCheckbox && persianCheckbox.checked;
+    const showGreek = greekCheckbox && greekCheckbox.checked;
+    const showRoman = romanCheckbox && romanCheckbox.checked;
+    const showEden = edenCheckbox && edenCheckbox.checked;
     container.innerHTML = '';
-    legend.hidden = !(territories.length || showJourney || showJoshua);
+    legend.hidden = !(territories.length || showJourney || showJoshua || showAssyrian || showBabylonian || showPersian || showGreek || showRoman || showEden);
     if (legend.hidden) return;
     
     // Territory legend items
@@ -426,6 +443,156 @@
         '<span><span class="legend-name">Conquest Cities</span><br><span>Green=Crossing, Gold=Camp, Red=Conquered, Blue=Treaty</span></span>';
       container.appendChild(cityLegendEl);
     }
+    
+    // Assyrian Empire legend
+    if (showAssyrian && typeof ANCIENT_EMPIRES !== 'undefined') {
+      var assyrianData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'assyrian-empire'; });
+      if (assyrianData) {
+        const refLink = assyrianData.referenceUrl
+          ? '<a href="' + assyrianData.referenceUrl + '" target="_blank" rel="noopener">' + escapeHtml(assyrianData.reference) + '</a>'
+          : escapeHtml(assyrianData.reference);
+        const assyrianEl = document.createElement('div');
+        assyrianEl.className = 'legend-item legend-item-empire';
+        assyrianEl.innerHTML =
+          '<span class="legend-color legend-color-striped" style="background:' + assyrianData.color + '"></span>' +
+          '<span><span class="legend-name">' + escapeHtml(assyrianData.name) + '</span><br><span class="legend-ref">' + refLink + '</span><br><span>' + escapeHtml(assyrianData.description) + '</span></span>';
+        container.appendChild(assyrianEl);
+      }
+    }
+    
+    // Babylonian Empire legend
+    if (showBabylonian && typeof ANCIENT_EMPIRES !== 'undefined') {
+      var babylonianData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'babylonian-empire'; });
+      if (babylonianData) {
+        const refLink = babylonianData.referenceUrl
+          ? '<a href="' + babylonianData.referenceUrl + '" target="_blank" rel="noopener">' + escapeHtml(babylonianData.reference) + '</a>'
+          : escapeHtml(babylonianData.reference);
+        const babylonianEl = document.createElement('div');
+        babylonianEl.className = 'legend-item legend-item-empire';
+        babylonianEl.innerHTML =
+          '<span class="legend-color legend-color-striped" style="background:' + babylonianData.color + '"></span>' +
+          '<span><span class="legend-name">' + escapeHtml(babylonianData.name) + '</span><br><span class="legend-ref">' + refLink + '</span><br><span>' + escapeHtml(babylonianData.description) + '</span></span>';
+        container.appendChild(babylonianEl);
+      }
+    }
+    
+    // Persian Empire legend
+    if (showPersian && typeof ANCIENT_EMPIRES !== 'undefined') {
+      var persianData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'persian-empire'; });
+      if (persianData) {
+        const refLink = persianData.referenceUrl
+          ? '<a href="' + persianData.referenceUrl + '" target="_blank" rel="noopener">' + escapeHtml(persianData.reference) + '</a>'
+          : escapeHtml(persianData.reference);
+        const persianEl = document.createElement('div');
+        persianEl.className = 'legend-item legend-item-empire';
+        persianEl.innerHTML =
+          '<span class="legend-color legend-color-striped" style="background:' + persianData.color + '"></span>' +
+          '<span><span class="legend-name">' + escapeHtml(persianData.name) + '</span><br><span class="legend-ref">' + refLink + '</span><br><span>' + escapeHtml(persianData.description) + '</span></span>';
+        container.appendChild(persianEl);
+      }
+    }
+    
+    // Greek Empire legend
+    if (showGreek && typeof ANCIENT_EMPIRES !== 'undefined') {
+      var greekData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'greek-empire'; });
+      if (greekData) {
+        const refLink = greekData.referenceUrl
+          ? '<a href="' + greekData.referenceUrl + '" target="_blank" rel="noopener">' + escapeHtml(greekData.reference) + '</a>'
+          : escapeHtml(greekData.reference);
+        const greekEl = document.createElement('div');
+        greekEl.className = 'legend-item legend-item-empire';
+        var noteHtml = greekData.note ? '<br><span class="legend-note">' + escapeHtml(greekData.note) + '</span>' : '';
+        greekEl.innerHTML =
+          '<span class="legend-color legend-color-striped" style="background:' + greekData.color + '"></span>' +
+          '<span><span class="legend-name">' + escapeHtml(greekData.name) + '</span><br><span class="legend-ref">' + refLink + '</span><br><span>' + escapeHtml(greekData.description) + '</span>' + noteHtml + '</span>';
+        container.appendChild(greekEl);
+      }
+    }
+    
+    // Roman Empire legend
+    if (showRoman && typeof ANCIENT_EMPIRES !== 'undefined') {
+      var romanData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'roman-empire'; });
+      if (romanData) {
+        const refLink = romanData.referenceUrl
+          ? '<a href="' + romanData.referenceUrl + '" target="_blank" rel="noopener">' + escapeHtml(romanData.reference) + '</a>'
+          : escapeHtml(romanData.reference);
+        const romanEl = document.createElement('div');
+        romanEl.className = 'legend-item legend-item-empire';
+        var noteHtml = romanData.note ? '<br><span class="legend-note">' + escapeHtml(romanData.note) + '</span>' : '';
+        romanEl.innerHTML =
+          '<span class="legend-color legend-color-striped" style="background:' + romanData.color + '"></span>' +
+          '<span><span class="legend-name">' + escapeHtml(romanData.name) + '</span><br><span class="legend-ref">' + refLink + '</span><br><span>' + escapeHtml(romanData.description) + '</span>' + noteHtml + '</span>';
+        container.appendChild(romanEl);
+      }
+    }
+    
+    // Garden of Eden legend
+    if (showEden) {
+      const edenEl = document.createElement('div');
+      edenEl.className = 'legend-item legend-item-eden';
+      edenEl.innerHTML =
+        '<span class="legend-markers">' +
+        '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#228B22;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);margin-right:4px;text-align:center;line-height:10px;color:#fff;font-size:8px;font-weight:bold;">?</span>' +
+        '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#90EE90;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,0.3);text-align:center;line-height:10px;color:#fff;font-size:8px;font-weight:bold;">?</span>' +
+        '</span>' +
+        '<span><span class="legend-name">Garden of Eden (Proposed Locations)</span><br>' +
+        '<span class="legend-ref"><a href="https://www.biblegateway.com/passage/?search=Genesis+2%3A10-14" target="_blank" rel="noopener">Genesis 2:10-14</a></span><br>' +
+        '<span>Dark green = moderate support, Light green = speculative. The exact location is unknown and debated among scholars.</span></span>';
+      container.appendChild(edenEl);
+    }
+  }
+
+  // --- Ancient Empire layers ---
+  const empireLayers = {};
+  const empireLayerGroup = L.layerGroup().addTo(map);
+
+  if (typeof ANCIENT_EMPIRES !== 'undefined' && ANCIENT_EMPIRES.length) {
+    ANCIENT_EMPIRES.forEach(function (empire) {
+      var layer = L.polygon(empire.coords, {
+        color: empire.color,
+        fillColor: empire.color,
+        fillOpacity: 0,
+        opacity: 0,
+        weight: 2,
+        className: 'empire-polygon',
+      });
+      layer.empireData = empire;
+      layer.on('click', function () {
+        showEmpirePopup(this);
+      });
+      empireLayers[empire.id] = layer;
+      empireLayerGroup.addLayer(layer);
+    });
+  }
+
+  function showEmpirePopup(layer) {
+    const e = layer.empireData;
+    const refLink = e.referenceUrl
+      ? '<a href="' + e.referenceUrl + '" target="_blank" rel="noopener">' + e.reference + '</a>'
+      : e.reference;
+    const html =
+      '<div class="empire-popup">' +
+      '<h3>' + escapeHtml(e.name) + '</h3>' +
+      '<p class="period">' + escapeHtml(e.period) + '</p>' +
+      '<p class="ref">' + refLink + '</p>' +
+      '<p class="description">' + escapeHtml(e.description) + '</p>' +
+      '</div>';
+    layer.bindPopup(html, { maxWidth: 320 }).openPopup();
+  }
+
+  function setEmpireVisibility(empireId, visible, opacityPercent) {
+    const layer = empireLayers[empireId];
+    if (!layer) return;
+    const e = layer.empireData;
+    const baseFill = e.opacity;
+    const fillOpacity = visible ? (opacityPercent / 100) * baseFill : 0;
+    layer.setStyle({
+      fillOpacity: fillOpacity,
+      opacity: visible ? 0.8 : 0,
+      fillColor: e.color,
+      color: e.color,
+    });
+    if (layer._path) layer._path.style.pointerEvents = visible ? 'auto' : 'none';
   }
 
   // --- Biblical location markers (clustered) ---
@@ -584,12 +751,425 @@
     else removeLocationMarkers();
   });
 
+  // --- Assyrian Empire checkbox ---
+  const assyrianCityMarkers = [];
+  const assyrianCityLayerGroup = L.layerGroup().addTo(map);
+  
+  // Create Assyrian city markers (Nineveh)
+  (function () {
+    if (typeof ANCIENT_EMPIRES === 'undefined') return;
+    var assyrianData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'assyrian-empire'; });
+    if (!assyrianData || !assyrianData.cities) return;
+    
+    assyrianData.cities.forEach(function (city) {
+      var markerColor = '#8B0000'; // Match empire color
+      if (city.type === 'capital') markerColor = '#FFD700'; // Gold for capital
+      
+      var marker = L.marker(city.coords, {
+        icon: L.divIcon({
+          className: 'empire-city-marker',
+          html: '<div style="width:14px;height:14px;border-radius:50%;background:' + markerColor + ';border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        }),
+      });
+      
+      var refLink = city.referenceUrl
+        ? '<a href="' + city.referenceUrl + '" target="_blank" rel="noopener">' + city.reference + '</a>'
+        : city.reference;
+      var popupHtml =
+        '<div class="empire-popup assyrian-popup">' +
+        '<h3>' + city.name + '</h3>' +
+        '<p class="conquest-type">Type: ' + city.type.charAt(0).toUpperCase() + city.type.slice(1) + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + city.description + '</p>' +
+        '</div>';
+      
+      marker.bindPopup(popupHtml, { maxWidth: 280 });
+      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: 'empire-city-label assyrian-city-label' });
+      assyrianCityMarkers.push(marker);
+    });
+  })();
+  
+  (function () {
+    const assyrianCheckbox = document.getElementById('show-assyrian-empire');
+    if (!assyrianCheckbox) return;
+    
+    function toggleAssyrianEmpire() {
+      const opacityPercent = getOpacityPercent();
+      setEmpireVisibility('assyrian-empire', assyrianCheckbox.checked, opacityPercent);
+      
+      // Toggle city markers
+      if (assyrianCheckbox.checked) {
+        assyrianCityMarkers.forEach(function (marker) {
+          assyrianCityLayerGroup.addLayer(marker);
+        });
+      } else {
+        assyrianCityLayerGroup.clearLayers();
+      }
+      
+      // Update legend
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    assyrianCheckbox.addEventListener('change', toggleAssyrianEmpire);
+  })();
+
+  // --- Babylonian Empire checkbox ---
+  const babylonianCityMarkers = [];
+  const babylonianCityLayerGroup = L.layerGroup().addTo(map);
+  
+  // Create Babylon city marker
+  (function () {
+    if (typeof ANCIENT_EMPIRES === 'undefined') return;
+    var babylonianData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'babylonian-empire'; });
+    if (!babylonianData || !babylonianData.cities) return;
+    
+    babylonianData.cities.forEach(function (city) {
+      var markerColor = '#4B0082'; // Match empire color
+      if (city.type === 'capital') markerColor = '#FFD700'; // Gold for capital
+      
+      var marker = L.marker(city.coords, {
+        icon: L.divIcon({
+          className: 'empire-city-marker',
+          html: '<div style="width:14px;height:14px;border-radius:50%;background:' + markerColor + ';border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        }),
+      });
+      
+      var refLink = city.referenceUrl
+        ? '<a href="' + city.referenceUrl + '" target="_blank" rel="noopener">' + city.reference + '</a>'
+        : city.reference;
+      var popupHtml =
+        '<div class="empire-popup">' +
+        '<h3>' + city.name + '</h3>' +
+        '<p class="conquest-type">Type: ' + city.type.charAt(0).toUpperCase() + city.type.slice(1) + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + city.description + '</p>' +
+        '</div>';
+      
+      marker.bindPopup(popupHtml, { maxWidth: 280 });
+      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: 'empire-city-label' });
+      babylonianCityMarkers.push(marker);
+    });
+  })();
+  
+  (function () {
+    const babylonianCheckbox = document.getElementById('show-babylonian-empire');
+    if (!babylonianCheckbox) return;
+    
+    function toggleBabylonianEmpire() {
+      const opacityPercent = getOpacityPercent();
+      setEmpireVisibility('babylonian-empire', babylonianCheckbox.checked, opacityPercent);
+      
+      // Toggle city markers
+      if (babylonianCheckbox.checked) {
+        babylonianCityMarkers.forEach(function (marker) {
+          babylonianCityLayerGroup.addLayer(marker);
+        });
+      } else {
+        babylonianCityLayerGroup.clearLayers();
+      }
+      
+      // Update legend
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    babylonianCheckbox.addEventListener('change', toggleBabylonianEmpire);
+  })();
+
+  // --- Persian Empire checkbox ---
+  const persianCityMarkers = [];
+  const persianCityLayerGroup = L.layerGroup().addTo(map);
+  
+  // Create Persian city markers (Persepolis, Susa)
+  (function () {
+    if (typeof ANCIENT_EMPIRES === 'undefined') return;
+    var persianData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'persian-empire'; });
+    if (!persianData || !persianData.cities) return;
+    
+    persianData.cities.forEach(function (city) {
+      var markerColor = '#DAA520'; // Match empire color (goldenrod)
+      if (city.type === 'capital') markerColor = '#FFD700'; // Gold for capital
+      
+      var marker = L.marker(city.coords, {
+        icon: L.divIcon({
+          className: 'empire-city-marker',
+          html: '<div style="width:14px;height:14px;border-radius:50%;background:' + markerColor + ';border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        }),
+      });
+      
+      var refLink = city.referenceUrl
+        ? '<a href="' + city.referenceUrl + '" target="_blank" rel="noopener">' + city.reference + '</a>'
+        : city.reference;
+      var popupHtml =
+        '<div class="empire-popup persian-popup">' +
+        '<h3>' + city.name + '</h3>' +
+        '<p class="conquest-type">Type: ' + city.type.charAt(0).toUpperCase() + city.type.slice(1) + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + city.description + '</p>' +
+        '</div>';
+      
+      marker.bindPopup(popupHtml, { maxWidth: 280 });
+      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: 'empire-city-label persian-city-label' });
+      persianCityMarkers.push(marker);
+    });
+  })();
+  
+  (function () {
+    const persianCheckbox = document.getElementById('show-persian-empire');
+    if (!persianCheckbox) return;
+    
+    function togglePersianEmpire() {
+      const opacityPercent = getOpacityPercent();
+      setEmpireVisibility('persian-empire', persianCheckbox.checked, opacityPercent);
+      
+      // Toggle city markers
+      if (persianCheckbox.checked) {
+        persianCityMarkers.forEach(function (marker) {
+          persianCityLayerGroup.addLayer(marker);
+        });
+      } else {
+        persianCityLayerGroup.clearLayers();
+      }
+      
+      // Update legend
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    persianCheckbox.addEventListener('change', togglePersianEmpire);
+  })();
+
+  // --- Greek Empire checkbox ---
+  const greekCityMarkers = [];
+  const greekCityLayerGroup = L.layerGroup().addTo(map);
+  
+  // Create Greek city markers
+  (function () {
+    if (typeof ANCIENT_EMPIRES === 'undefined') return;
+    var greekData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'greek-empire'; });
+    if (!greekData || !greekData.cities) return;
+    
+    greekData.cities.forEach(function (city) {
+      var markerColor = '#1E90FF'; // Match empire color (dodger blue)
+      if (city.type === 'capital') markerColor = '#FFD700'; // Gold for capital
+      
+      var marker = L.marker(city.coords, {
+        icon: L.divIcon({
+          className: 'empire-city-marker',
+          html: '<div style="width:14px;height:14px;border-radius:50%;background:' + markerColor + ';border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        }),
+      });
+      
+      var refLink = city.referenceUrl
+        ? '<a href="' + city.referenceUrl + '" target="_blank" rel="noopener">' + city.reference + '</a>'
+        : city.reference;
+      var popupHtml =
+        '<div class="empire-popup greek-popup">' +
+        '<h3>' + city.name + '</h3>' +
+        '<p class="conquest-type">Type: ' + city.type.charAt(0).toUpperCase() + city.type.slice(1) + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + city.description + '</p>' +
+        '</div>';
+      
+      marker.bindPopup(popupHtml, { maxWidth: 280 });
+      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: 'empire-city-label greek-city-label' });
+      greekCityMarkers.push(marker);
+    });
+  })();
+  
+  (function () {
+    const greekCheckbox = document.getElementById('show-greek-empire');
+    if (!greekCheckbox) return;
+    
+    function toggleGreekEmpire() {
+      const opacityPercent = getOpacityPercent();
+      setEmpireVisibility('greek-empire', greekCheckbox.checked, opacityPercent);
+      
+      // Toggle city markers
+      if (greekCheckbox.checked) {
+        greekCityMarkers.forEach(function (marker) {
+          greekCityLayerGroup.addLayer(marker);
+        });
+      } else {
+        greekCityLayerGroup.clearLayers();
+      }
+      
+      // Update legend
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    greekCheckbox.addEventListener('change', toggleGreekEmpire);
+  })();
+
+  // --- Roman Empire checkbox ---
+  const romanCityMarkers = [];
+  const romanCityLayerGroup = L.layerGroup().addTo(map);
+  
+  // Create Roman city markers
+  (function () {
+    if (typeof ANCIENT_EMPIRES === 'undefined') return;
+    var romanData = ANCIENT_EMPIRES.find(function(e) { return e.id === 'roman-empire'; });
+    if (!romanData || !romanData.cities) return;
+    
+    romanData.cities.forEach(function (city) {
+      var markerColor = '#800020'; // Match empire color (burgundy)
+      if (city.type === 'capital') markerColor = '#FFD700'; // Gold for capital
+      
+      var marker = L.marker(city.coords, {
+        icon: L.divIcon({
+          className: 'empire-city-marker',
+          html: '<div style="width:14px;height:14px;border-radius:50%;background:' + markerColor + ';border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+        }),
+      });
+      
+      var refLink = city.referenceUrl
+        ? '<a href="' + city.referenceUrl + '" target="_blank" rel="noopener">' + city.reference + '</a>'
+        : city.reference;
+      var popupHtml =
+        '<div class="empire-popup roman-popup">' +
+        '<h3>' + city.name + '</h3>' +
+        '<p class="conquest-type">Type: ' + city.type.charAt(0).toUpperCase() + city.type.slice(1) + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + city.description + '</p>' +
+        '</div>';
+      
+      marker.bindPopup(popupHtml, { maxWidth: 280 });
+      marker.bindTooltip(city.name, { permanent: true, direction: 'top', className: 'empire-city-label roman-city-label' });
+      romanCityMarkers.push(marker);
+    });
+  })();
+  
+  (function () {
+    const romanCheckbox = document.getElementById('show-roman-empire');
+    if (!romanCheckbox) return;
+    
+    function toggleRomanEmpire() {
+      const opacityPercent = getOpacityPercent();
+      setEmpireVisibility('roman-empire', romanCheckbox.checked, opacityPercent);
+      
+      // Toggle city markers
+      if (romanCheckbox.checked) {
+        romanCityMarkers.forEach(function (marker) {
+          romanCityLayerGroup.addLayer(marker);
+        });
+      } else {
+        romanCityLayerGroup.clearLayers();
+      }
+      
+      // Update legend
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    romanCheckbox.addEventListener('change', toggleRomanEmpire);
+  })();
+
+  // --- Garden of Eden checkbox ---
+  const edenMarkers = [];
+  const edenLayerGroup = L.layerGroup().addTo(map);
+  
+  // Create Eden location markers
+  (function () {
+    if (typeof GARDEN_EDEN_LOCATIONS === 'undefined') return;
+    
+    GARDEN_EDEN_LOCATIONS.forEach(function (loc) {
+      var markerColor = '#228B22'; // Forest green for Eden
+      if (loc.confidence === 'speculative') markerColor = '#90EE90'; // Lighter green for speculative
+      
+      var marker = L.marker(loc.coords, {
+        icon: L.divIcon({
+          className: 'eden-marker',
+          html: '<div style="width:16px;height:16px;border-radius:50%;background:' + markerColor + ';border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;"><span style="color:#fff;font-size:10px;font-weight:bold;">?</span></div>',
+          iconSize: [22, 22],
+          iconAnchor: [11, 11],
+        }),
+      });
+      
+      var refLink = loc.referenceUrl
+        ? '<a href="' + loc.referenceUrl + '" target="_blank" rel="noopener">' + loc.reference + '</a>'
+        : loc.reference;
+      var confidenceText = loc.confidence === 'moderate' ? 'Moderate scholarly support' : 'Speculative theory';
+      var popupHtml =
+        '<div class="eden-popup">' +
+        '<h3>' + loc.name + '</h3>' +
+        '<p class="eden-confidence">Confidence: ' + confidenceText + '</p>' +
+        '<p class="ref">' + refLink + '</p>' +
+        '<p class="description">' + loc.description + '</p>' +
+        '</div>';
+      
+      marker.bindPopup(popupHtml, { maxWidth: 300 });
+      marker.bindTooltip(loc.name, { permanent: true, direction: 'top', className: 'eden-label' });
+      edenMarkers.push(marker);
+    });
+  })();
+  
+  (function () {
+    const edenCheckbox = document.getElementById('show-garden-eden');
+    if (!edenCheckbox) return;
+    
+    function toggleGardenEden() {
+      if (edenCheckbox.checked) {
+        edenMarkers.forEach(function (marker) {
+          edenLayerGroup.addLayer(marker);
+        });
+      } else {
+        edenLayerGroup.clearLayers();
+      }
+      
+      // Update legend
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    
+    edenCheckbox.addEventListener('change', toggleGardenEden);
+  })();
+
   // --- Opacity slider ---
   const opacitySlider = document.getElementById('opacity-slider');
   const opacityValue = document.getElementById('opacity-value');
   opacitySlider.addEventListener('input', function () {
     opacityValue.textContent = this.value;
     applyPeriodFromCheckboxes();
+    
+    // Also update empire visibility if checked
+    const assyrianCheckbox = document.getElementById('show-assyrian-empire');
+    if (assyrianCheckbox && assyrianCheckbox.checked) {
+      setEmpireVisibility('assyrian-empire', true, Number(this.value));
+    }
+    const babylonianCheckbox = document.getElementById('show-babylonian-empire');
+    if (babylonianCheckbox && babylonianCheckbox.checked) {
+      setEmpireVisibility('babylonian-empire', true, Number(this.value));
+    }
+    const persianCheckbox = document.getElementById('show-persian-empire');
+    if (persianCheckbox && persianCheckbox.checked) {
+      setEmpireVisibility('persian-empire', true, Number(this.value));
+    }
+    const greekCheckbox = document.getElementById('show-greek-empire');
+    if (greekCheckbox && greekCheckbox.checked) {
+      setEmpireVisibility('greek-empire', true, Number(this.value));
+    }
+    const romanCheckbox = document.getElementById('show-roman-empire');
+    if (romanCheckbox && romanCheckbox.checked) {
+      setEmpireVisibility('roman-empire', true, Number(this.value));
+    }
   });
 
   // --- Fit to Territory button ---

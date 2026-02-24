@@ -331,6 +331,16 @@ input[type="range"] {
   border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.legend-color-striped {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.3) 2px,
+    rgba(255, 255, 255, 0.3) 4px
+  );
+}
+
 .legend-line {
   flex-shrink: 0;
   width: 24px;
@@ -441,31 +451,172 @@ input[type="range"] {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
-.territory-popup h3 {
+.territory-popup h3,
+.empire-popup h3 {
   margin: 0 0 6px 0;
   font-size: 1rem;
 }
 
-.territory-popup .period {
+.territory-popup .period,
+.empire-popup .period {
   font-size: 0.85rem;
   color: #666;
   margin-bottom: 8px;
 }
 
-.territory-popup .ref a {
+.territory-popup .ref a,
+.empire-popup .ref a {
   color: #4169E1;
   text-decoration: none;
   font-size: 0.9rem;
 }
 
-.territory-popup .ref a:hover {
+.territory-popup .ref a:hover,
+.empire-popup .ref a:hover {
   text-decoration: underline;
 }
 
-.territory-popup .description {
+.territory-popup .description,
+.empire-popup .description {
   margin-top: 8px;
   font-size: 0.9rem;
   color: #444;
+}
+
+/* Empire popup specific styling */
+.empire-popup h3 {
+  color: #8B0000;
+}
+
+/* Babylonian empire popup */
+.empire-popup h3 {
+  color: #4B0082;
+}
+
+/* Empire polygon styling */
+.empire-polygon {
+  stroke-dasharray: 8, 4;
+}
+
+/* Empire city markers */
+.empire-city-marker {
+  background: none !important;
+  border: none !important;
+}
+
+/* Empire city labels */
+.leaflet-tooltip.empire-city-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #4B0082;
+  white-space: nowrap;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 1px 2px rgba(255,255,255,0.9);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0 2px;
+}
+
+/* Assyrian city label - dark red to match empire */
+.leaflet-tooltip.assyrian-city-label {
+  color: #8B0000;
+}
+
+/* Assyrian popup heading */
+.assyrian-popup h3 {
+  color: #8B0000 !important;
+}
+
+/* Persian city label - goldenrod to match empire */
+.leaflet-tooltip.persian-city-label {
+  color: #B8860B;
+}
+
+/* Persian popup heading */
+.persian-popup h3 {
+  color: #DAA520 !important;
+}
+
+/* Greek city label - dodger blue to match empire */
+.leaflet-tooltip.greek-city-label {
+  color: #1E90FF;
+}
+
+/* Greek popup heading */
+.greek-popup h3 {
+  color: #1E90FF !important;
+}
+
+/* Roman city label - burgundy to match empire */
+.leaflet-tooltip.roman-city-label {
+  color: #800020;
+}
+
+/* Roman popup heading */
+.roman-popup h3 {
+  color: #800020 !important;
+}
+
+/* Garden of Eden markers */
+.eden-marker {
+  background: none !important;
+  border: none !important;
+}
+
+/* Eden location labels */
+.leaflet-tooltip.eden-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #228B22;
+  white-space: nowrap;
+  text-shadow: 0 0 3px #fff, 0 0 6px #fff, 0 1px 2px rgba(255,255,255,0.9);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0 2px;
+}
+
+/* Eden popup styling */
+.eden-popup h3 {
+  color: #228B22 !important;
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+}
+
+.eden-popup .eden-confidence {
+  font-size: 0.85rem;
+  color: #666;
+  font-style: italic;
+  margin: 0 0 6px 0;
+}
+
+.eden-popup .ref a {
+  color: #4169E1;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.eden-popup .ref a:hover {
+  text-decoration: underline;
+}
+
+.eden-popup .description {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Legend note styling */
+.legend-note {
+  display: block;
+  margin-top: 6px;
+  padding: 6px 8px;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #666;
+  background: rgba(0, 0, 0, 0.04);
+  border-left: 2px solid #999;
+  border-radius: 2px;
 }
 
 /* Location marker styling: small blue dots with labels */
