@@ -105,6 +105,29 @@
     });
   }
 
+  // --- Elijah's Journey (dashed orange polyline, toggle via checkbox) ---
+  const elijahLayerGroup = L.layerGroup().addTo(map);
+  var elijahLine = null;
+  var elijahLabel = null;
+  if (typeof ELIJAH_JOURNEY !== 'undefined' && ELIJAH_JOURNEY.coords && ELIJAH_JOURNEY.coords.length >= 2) {
+    elijahLine = L.polyline(ELIJAH_JOURNEY.coords, {
+      color: ELIJAH_JOURNEY.color,
+      weight: ELIJAH_JOURNEY.weight || 5,
+      opacity: 1,
+      dashArray: ELIJAH_JOURNEY.dashArray || '10, 8',
+      className: 'journey-polyline',
+    });
+    elijahLabel = L.marker(ELIJAH_JOURNEY.labelPosition, {
+      icon: L.divIcon({
+        className: 'elijah-label',
+        html: '<span class="elijah-label-text">' + (ELIJAH_JOURNEY.labelText || ELIJAH_JOURNEY.name) + '</span>',
+        iconSize: null,
+        iconAnchor: [0, 0],
+      }),
+      interactive: false,
+    });
+  }
+
   // --- Joshua's Conquest Route (dashed brown polyline, toggle via checkbox) ---
   const joshuaLayerGroup = L.layerGroup().addTo(map);
   var joshuaSouthernLine = null;
@@ -366,6 +389,7 @@
     const legend = document.getElementById('legend');
     const container = document.getElementById('legend-items');
     const journeyCheckbox = document.getElementById('show-abraham-journey');
+    const elijahCheckbox = document.getElementById('show-elijah-journey');
     const joshuaCheckbox = document.getElementById('show-joshua-conquest');
     const assyrianCheckbox = document.getElementById('show-assyrian-empire');
     const babylonianCheckbox = document.getElementById('show-babylonian-empire');
@@ -374,6 +398,7 @@
     const romanCheckbox = document.getElementById('show-roman-empire');
     const edenCheckbox = document.getElementById('show-garden-eden');
     const showJourney = journeyCheckbox && journeyCheckbox.checked;
+    const showElijah = elijahCheckbox && elijahCheckbox.checked;
     const showJoshua = joshuaCheckbox && joshuaCheckbox.checked;
     const showAssyrian = assyrianCheckbox && assyrianCheckbox.checked;
     const showBabylonian = babylonianCheckbox && babylonianCheckbox.checked;
@@ -382,7 +407,7 @@
     const showRoman = romanCheckbox && romanCheckbox.checked;
     const showEden = edenCheckbox && edenCheckbox.checked;
     container.innerHTML = '';
-    legend.hidden = !(territories.length || showJourney || showJoshua || showAssyrian || showBabylonian || showPersian || showGreek || showRoman || showEden);
+    legend.hidden = !(territories.length || showJourney || showElijah || showJoshua || showAssyrian || showBabylonian || showPersian || showGreek || showRoman || showEden);
     if (legend.hidden) return;
     
     // Territory legend items
@@ -408,6 +433,16 @@
       container.appendChild(journeyEl);
     }
     
+    // Elijah's Journey legend
+    if (showElijah && typeof ELIJAH_JOURNEY !== 'undefined') {
+      const elijahEl = document.createElement('div');
+      elijahEl.className = 'legend-item legend-item-journey';
+      elijahEl.innerHTML =
+        '<span class="legend-line legend-line-dashed" style="border-color:' + (ELIJAH_JOURNEY.color || '#FF8C00') + '"></span>' +
+        '<span><span class="legend-name">' + escapeHtml(ELIJAH_JOURNEY.labelText || ELIJAH_JOURNEY.name) + '</span><br><span>Mount Carmel → Jezreel → Beersheba → Horeb; returned to Abel-meholah to call Elisha (1 Kings 18–19)</span></span>';
+      container.appendChild(elijahEl);
+    }
+
     // Joshua's Conquest legend
     if (showJoshua) {
       // Southern campaign
@@ -741,6 +776,25 @@
       updateLegend(visibleTerritories);
     }
     journeyCheckbox.addEventListener('change', toggleJourney);
+  })();
+
+  // --- Elijah's Journey checkbox: show/hide route and refresh legend ---
+  (function () {
+    const elijahCheckbox = document.getElementById('show-elijah-journey');
+    if (!elijahCheckbox || !elijahLine || !elijahLabel) return;
+    function toggleElijah() {
+      if (elijahCheckbox.checked) {
+        elijahLayerGroup.addLayer(elijahLine);
+        elijahLayerGroup.addLayer(elijahLabel);
+      } else {
+        elijahLayerGroup.removeLayer(elijahLine);
+        elijahLayerGroup.removeLayer(elijahLabel);
+      }
+      var selectedKeys = getSelectedPeriodKeys();
+      var visibleTerritories = TERRITORIES.filter(function (t) { return selectedKeys.indexOf(t.periodKey) !== -1; });
+      updateLegend(visibleTerritories);
+    }
+    elijahCheckbox.addEventListener('change', toggleElijah);
   })();
 
   // --- Joshua's Conquest checkbox: show/hide route, cities, and refresh legend ---

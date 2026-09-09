@@ -76,6 +76,7 @@ const BIBLICAL_LOCATIONS = {
     { name: 'Sea of Galilee', coords: [32.8, 35.6], type: 'feature' },
     { name: 'Jordan River', coords: [32.1, 35.55], type: 'feature' },
     { name: 'Mediterranean Sea', coords: [32.5, 34.5], type: 'feature' },
+    { name: 'Mount Carmel', coords: [32.674, 35.115], type: 'feature' },
   ],
 };
 
@@ -339,6 +340,30 @@ const ABRAHAM_JOURNEY = {
   dashArray: '10, 10',
   labelPosition: [34.5, 38.5],
   labelText: "ABRAHAM'S JOURNEY",
+};
+
+/* =========================
+   ELIJAH
+   Elijah's ministry travels: the contest on Mount Carmel, the flight
+   to Horeb, and the return to anoint Elisha.
+   Reference: 1 Kings 17-19
+========================= */
+const ELIJAH_JOURNEY = {
+  id: 'elijah-journey',
+  name: "Elijah's Journey",
+  coords: [
+    [32.674, 35.115],    // Mount Carmel - contest with the prophets of Baal
+    [32.5578, 35.3289],  // Jezreel - ran ahead of Ahab's chariot
+    [31.243, 34.7925],   // Beersheba - left his servant
+    [30.7, 34.85],       // Wilderness of Beersheba - a day's journey to the broom tree
+    [28.5394, 33.9749],  // Mount Horeb (Sinai) - the still small voice
+    [32.354, 35.533],    // Abel-meholah - returned to call Elisha
+  ],
+  color: '#FF8C00',
+  weight: 5,
+  dashArray: '10, 8',
+  labelPosition: [29.6, 34.0],
+  labelText: "ELIJAH'S JOURNEY",
 };
 
 /* =========================
