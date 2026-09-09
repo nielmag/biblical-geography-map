@@ -1,0 +1,47 @@
+schema: spec-driven
+
+context: |
+  Biblical Geography Explorer — a single-page, static Leaflet map of biblical
+  territories, empires, routes, and locations for educational use.
+
+  Tech stack: plain HTML/CSS/vanilla JS (ES5-style: var, function, IIFEs, no
+  modules, no framework). Leaflet + plugins loaded from CDN. No build step.
+
+  Files:
+    - index.html  — page shell, control-panel markup, ?v=N cache-busting on data.js / app.js
+    - data.js     — all map content as top-level const objects/arrays
+    - app.js      — one IIFE: map init, layer construction, control wiring, legend, modal
+    - styles.css  — all styling
+
+  Conventions:
+    - Coordinates are ALWAYS [latitude, longitude] (Leaflet order); never swap.
+    - Each toggleable overlay: a const in data.js + an id="show-..." checkbox in
+      index.html + an IIFE in app.js that adds/removes layers on change and calls
+      updateLegend(...); also add it to updateLegend()'s legend.hidden guard.
+    - Bump the matching ?v=N in index.html whenever data.js or app.js changes.
+    - Precision is intentionally low (illustrative "biblical maximalist" map).
+
+  Deploy: Netlify auto-builds from GitHub main on push.
+  See CLAUDE.md for the full rundown.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing

@@ -39,6 +39,15 @@ no framework, no dependencies beyond CDN-hosted Leaflet.
 - **When editing `data.js` or `app.js`, bump the matching `?v=N` in `index.html`**
   so Netlify/browsers pick up the change.
 
+## Specs (OpenSpec)
+
+This repo uses [OpenSpec](https://github.com/Fission-AI/OpenSpec) for spec-driven
+work. Current behavior contracts live in `openspec/specs/<capability>/spec.md`;
+proposed work goes through `openspec/changes/<name>/` (proposal → design → specs →
+tasks) and merges into `specs/` on `openspec archive`. Project context is in
+`openspec/config.yaml`. CLI: `npx @fission-ai/openspec@latest <cmd>` (or install
+`@fission-ai/openspec` globally). Slash commands: `/opsx:*`.
+
 ## Deploy
 
 Netlify auto-builds from GitHub `main` on push (no `netlify.toml`; the repo folder
